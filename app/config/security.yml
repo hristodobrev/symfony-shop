@@ -1,24 +1,29 @@
 # To get started with security, check out the documentation:
 # http://symfony.com/doc/current/security.html
 security:
-
+    encoders:
+        ShopBundle\Entity\User: bcrypt
     # http://symfony.com/doc/current/security.html#b-configuring-how-users-are-loaded
     providers:
-        in_memory:
-            memory: ~
+        database_user:
+            entity: { class: ShopBundle:User, property: username }
 
     firewalls:
-        # disables authentication for assets and the profiler, adapt it according to your needs
-        dev:
-            pattern: ^/(_(profiler|wdt)|css|images|js)/
-            security: false
+        secured_area:
+            pattern: ^/
 
-        main:
-            anonymous: ~
-            # activate different ways to authenticate
+            anonymous: true
 
-            # http_basic: ~
-            # http://symfony.com/doc/current/security.html#a-configuring-how-your-users-will-authenticate
+            form_login:
+                check_path: security_login
 
-            # form_login: ~
-            # http://symfony.com/doc/current/cookbook/security/form_login_setup.html
+                login_path: security_login
+
+                csrf_token_generator: security.csrf.token_manager
+
+            logout:
+                path: security_logout
+
+                target: index
+
+    access_control:
