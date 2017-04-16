@@ -2,35 +2,35 @@
 
 {% block main %}
     <div class="col-lg-6 col-lg-offset-3">
-        <form class="form-horizontal" name="register" action="{{ path('security_register') }}" method="post">
+        <form class="form-horizontal" name="register" action="{{ path('user_register') }}" method="post">
             <fieldset>
                 <legend>Register</legend>
                 <div class="form-group">
-                    <label for="username" class="col-lg-2 control-label">Username</label>
-                    <div class="col-lg-10">
+                    <label for="username" class="col-lg-3 control-label">Username</label>
+                    <div class="col-lg-9">
                         <input type="text" name="user[username]" class="form-control" id="username" placeholder="Enter Username">
                     </div>
                 </div>
                 <div class="form-group">
-                    <label for="email" class="col-lg-2 control-label">Email</label>
-                    <div class="col-lg-10">
+                    <label for="email" class="col-lg-3 control-label">Email</label>
+                    <div class="col-lg-9">
                         <input type="email" name="user[email]" class="form-control" id="email" placeholder="Enter Email">
                     </div>
                 </div>
                 <div class="form-group">
-                    <label for="fullName" class="col-lg-2 control-label">Full name</label>
-                    <div class="col-lg-10">
+                    <label for="fullName" class="col-lg-3 control-label">Full name</label>
+                    <div class="col-lg-9">
                         <input type="text" name="user[fullName]" class="form-control" id="fullName" placeholder="Enter Full name">
                     </div>
                 </div>
                 <div class="form-group">
-                    <label for="password" class="col-lg-2 control-label">Password</label>
-                    <div class="col-lg-10">
+                    <label for="password" class="col-lg-3 control-label">Password</label>
+                    <div class="col-lg-9">
                         <input type="password" name="user[password]" class="form-control" id="password" placeholder="Enter Password">
                     </div>
                 </div>
                 <div class="form-group">
-                    <div class="col-lg-offset-2 col-lg-10">
+                    <div class="col-lg-offset-3 col-lg-9">
                         <input type="hidden" name="_csrf_token" value="{{ csrf_token('register') }}">
                         <input class="btn btn-primary" type="submit" value="Register">
                     </div>

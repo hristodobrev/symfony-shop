@@ -24,6 +24,6 @@ security:
             logout:
                 path: security_logout
 
-                target: index
+                target: homepage
 
     access_control:

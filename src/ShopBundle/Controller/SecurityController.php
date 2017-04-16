@@ -21,33 +21,12 @@ class SecurityController extends Controller
     }
 
     /**
-     * @Route("/register", name="security_register")
+     * @Route("/logout", name="security_logout")
      *
-     * @param Request $request
-     *
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */
-    public function registerAction(Request $request)
+    public function logoutAction()
     {
-        $user = new User();
-        $form = $this->createForm(UserType::class, $user);
-
-        $form->handleRequest($request);
-        if ($form->isValid()) {
-            $password = $this->get('security.password_encoder')
-                ->encodePassword($user, $user->getPassword());
-
-            var_dump($user);
-
-            $user->setPassword($password);
-            $em = $this->getDoctrine()->getManager();
-
-            $em->persist($user);
-            $em->flush();
-
-            return $this->redirectToRoute('security_login');
-        }
-
-        return $this->render('security/register.html.twig');
+        return $this->redirectToRoute('homepage');
     }
 }
