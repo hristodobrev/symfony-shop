@@ -1,0 +1,22 @@
+{% extends 'base.html.twig' %}
+
+{% block main %}
+    {% for product in products %}
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                {{ product.name }}
+            </div>
+            <div class="panel-body">
+                <p>{{ product.description }}</p>
+            </div>
+            <div class="panel-footer">
+                Price: {{ product.price|localizedcurrency('EUR') }}
+            </div>
+        </div>
+    {% endfor %}
+{% endblock %}
+
+{% block title %}
+    Products
+{% endblock %}
+

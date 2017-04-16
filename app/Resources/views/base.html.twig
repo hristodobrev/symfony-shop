@@ -24,9 +24,8 @@
             </div>
             <ul class="nav navbar-nav navbar-right">
                 {% if app.user %}
-                    <li>
-                        <a href="">{{ app.user.fullName }} Cash: {{ app.user.cash|localizedcurrency('EUR') }}</a>
-                    </li>
+                    <li><a href="">{{ app.user.fullName }}</a></li>
+                    <li><a href="">Cash: {{ app.user.cash|localizedcurrency('EUR') }}</a></li>
                     <li><a href="{{ path('security_logout') }}">Logout</a></li>
                 {% else %}
                     <li><a href="{{ path('security_login') }}">Login</a></li>
