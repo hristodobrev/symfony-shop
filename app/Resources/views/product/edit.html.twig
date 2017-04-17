@@ -1,38 +1,39 @@
 {% extends 'base.html.twig' %}
 
 {% block title %}
-    Add Product
+    Edit Product
 {% endblock %}
 
 {% block main %}
     <div class="col-lg-6 col-lg-offset-3">
-        <form class="form-horizontal" method="post" action="{{ path('add_product') }}">
+        <form class="form-horizontal" method="post" action="{{ path('edit_product', { id: product.id }) }}">
             <fieldset>
-                <legend>Add New Product</legend>
+                <legend>Edit Product</legend>
                 <div class="form-group">
                     <label for="name" class="col-lg-3 control-label">Name</label>
                     <div class="col-lg-9">
                         <input type="text" name="product[name]" class="form-control" id="name"
-                               placeholder="Enter product name">
+                               value="{{ product.name }}">
                     </div>
                 </div>
                 <div class="form-group">
                     <label for="description" class="col-lg-3 control-label">Description</label>
                     <div class="col-lg-9">
-                    <textarea class="form-control" name="product[description]" id="description"
-                              placeholder="Enter some description"></textarea>
+                    <textarea class="form-control" name="product[description]" id="description">{{ product.description }}</textarea>
                     </div>
                 </div>
                 <div class="form-group">
                     <label for="price" class="col-lg-3 control-label">Price</label>
                     <div class="col-lg-9">
-                        <input type="number" name="product[price]" class="form-control" id="price">
+                        <input type="number" name="product[price]" value="{{ product.price }}" class="form-control"
+                               id="price">
                     </div>
                 </div>
                 <div class="form-group">
                     <label for="quantity" class="col-lg-3 control-label">Quantity</label>
                     <div class="col-lg-9">
-                        <input type="number" name="product[quantity]" class="form-control" id="quantity">
+                        <input type="number" name="product[quantity]" value="{{ product.quantity }}"
+                               class="form-control" id="quantity">
                     </div>
                 </div>
                 <div class="form-group">
@@ -40,7 +41,11 @@
                     <div class="col-lg-9">
                         <select name="category" id="categories" class="form-control">
                             {% for category in categories %}
-                                <option value="{{ category.id }}">{{ category.name }}</span></option>
+                                {% if product.category.id == category.id %}
+                                    <option selected="selected" value="{{ category.id }}">{{ category.name }}</option>
+                                {% else %}
+                                    <option value="{{ category.id }}">{{ category.name }}</option>
+                                {% endif %}
                             {% endfor %}
                         </select>
                     </div>
@@ -48,7 +53,7 @@
                 <div class="form-group">
                     <div class="col-lg-offset-3 col-lg-9">
                         {{ form_row(productForm._token) }}
-                        <input class="btn btn-primary" type="submit" value="Add Product">
+                        <input class="btn btn-primary" type="submit" value="Edit Product">
                     </div>
                 </div>
             </fieldset>

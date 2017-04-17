@@ -3,12 +3,12 @@
 {% block main %}
     <ul class="breadcrumb">
         <li class="active">
-            All
+            <strong>All</strong>
         </li>
         {% for category in categories %}
             <li>
                 <a href="{{ path('view_products_by_category', { id: category.id }) }}">
-                    {{ category.name }} ({{ category.products|length }})
+                    <strong>{{ category.name }} ({{ category.products|length }})</strong>
                 </a>
             </li>
         {% endfor %}
@@ -17,7 +17,12 @@
     {% for product in products %}
         <div class="panel panel-default">
             <div class="panel-heading">
-                {{ product.name }}
+                {{ product.category.name }} | {{ product.name }}
+                {% if product.user.id == app.user.id or app.user.isAdmin or app.user.isEditor %}
+                    <span class="pull-right">
+                        <a href="{{ path('edit_product', { id: product.id }) }}">Edit</a>
+                    </span>
+                {% endif %}
             </div>
             <div class="panel-body">
                 <p>{{ product.description }}</p>

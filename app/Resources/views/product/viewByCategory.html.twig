@@ -3,18 +3,20 @@
 {% block main %}
     <ul class="breadcrumb">
         <li>
-            <a href="{{ path('view_all_products') }}">All</a>
+            <strong><a href="{{ path('view_all_products') }}">All</a></strong>
         </li>
         {% for category in categories %}
             {% if currentCategoryId == category.id %}
                 <li class="active">
-                    {{ category.name }} ({{ category.products|length }})
+                    <strong>{{ category.name }} ({{ category.products|length }})</strong>
                 </li>
             {% else %}
                 <li>
-                    <a href="{{ path('view_products_by_category', { id: category.id }) }}">
-                        {{ category.name }} ({{ category.products|length }})
-                    </a>
+                    <strong>
+                        <a href="{{ path('view_products_by_category', { id: category.id }) }}">
+                            {{ category.name }} ({{ category.products|length }})
+                        </a>
+                    </strong>
                 </li>
             {% endif %}
         {% endfor %}
@@ -24,12 +26,22 @@
         <div class="panel panel-default">
             <div class="panel-heading">
                 {{ product.name }}
+                {% if product.user.id == app.user.id or app.user.isAdmin or app.user.isEditor %}
+                    <span class="pull-right">
+                        <a href="{{ path('edit_product', { id: product.id }) }}">Edit</a>
+                    </span>
+                {% endif %}
             </div>
             <div class="panel-body">
                 <p>{{ product.description }}</p>
             </div>
             <div class="panel-footer">
                 Price: {{ product.price|localizedcurrency('EUR') }}
+                <span class="pull-right">
+                    <a href="{{ path('user_profile', { id: product.user.id }) }}">
+                        {{ product.user.fullName }}
+                    </a>
+                </span>
             </div>
         </div>
     {% endfor %}

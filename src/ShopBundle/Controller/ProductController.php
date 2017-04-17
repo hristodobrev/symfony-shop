@@ -9,6 +9,7 @@ use ShopBundle\Form\ProductType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Validator\Constraints\DateTime;
 
 /**
  * @Route("product", name="product")
@@ -84,6 +85,50 @@ class ProductController extends Controller
         return $this->render('product/add.html.twig', [
             'productForm' => $form->createView(),
             'categories' => $categories
+        ]);
+    }
+
+    /**
+     * @Route("/edit/{id}", name="edit_product")
+     * @Security("is_granted('IS_AUTHENTICATED_FULLY')")
+     *
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
+     */
+    public function editProduct($id, Request $request)
+    {
+        $categoryRepository = $this->getDoctrine()->getRepository(Category::class);
+        $categories = $categoryRepository->findAll();
+
+        $product = $this->getDoctrine()->getRepository(Product::class)->find($id);
+
+        if ($this->getUser()->getId() != $product->getUser()->getId() &&
+            !$this->getUser()->isAdmin() &&
+            !$this->getUser()->isEditor()) {
+            throw new \Exception('You cannot edit other\'s users post.');
+        }
+
+        $form = $this->createForm(ProductType::class, $product);
+
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $product->setUser($this->getUser());
+            $category = $categoryRepository->find($request->request->get('category'));
+            $product->setCategory($category);
+            $product->setDateUpdated(new \DateTime());
+
+            $em = $this->getDoctrine()->getManager();
+
+            $em->persist($product);
+            $em->flush();
+
+            return $this->redirectToRoute('view_all_products');
+        }
+
+        return $this->render('product/edit.html.twig', [
+            'productForm' => $form->createView(),
+            'categories' => $categories,
+            'product' => $product
         ]);
     }
 }
