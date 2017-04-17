@@ -25,11 +25,26 @@ class ProductController extends Controller
     {
         $categories = $this->getDoctrine()->getRepository(Category::class)->findAll();
 
-        $products = $this->getDoctrine()->getRepository(Product::class)->findAll();
+        $products = $this->getDoctrine()->getRepository(Product::class)->findAllAvailable();
 
         return $this->render('product/viewAll.html.twig', [
             'products' => $products,
             'categories' => $categories
+        ]);
+    }
+
+    /**
+     * @Route("/{id}", name="view_product")
+     *
+     * @param $id
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function view($id)
+    {
+        $product = $this->getDoctrine()->getRepository(Product::class)->find($id);
+
+        return $this->render('product/view.html.twig', [
+            'product' => $product
         ]);
     }
 
@@ -104,7 +119,8 @@ class ProductController extends Controller
 
         if ($this->getUser()->getId() != $product->getUser()->getId() &&
             !$this->getUser()->isAdmin() &&
-            !$this->getUser()->isEditor()) {
+            !$this->getUser()->isEditor()
+        ) {
             throw new \Exception('You cannot edit other\'s users post.');
         }
 

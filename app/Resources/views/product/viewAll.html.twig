@@ -17,8 +17,10 @@
     {% for product in products %}
         <div class="panel panel-default">
             <div class="panel-heading">
-                {{ product.category.name }} | {{ product.name }}
-                {% if product.user.id == app.user.id or app.user.isAdmin or app.user.isEditor %}
+                <a href="{{ path('view_product', { id: product.id }) }}">
+                    {{ product.category.name }} | {{ product.name }}
+                </a>
+                {% if app.user and (product.user.id == app.user.id or app.user.isAdmin or app.user.isEditor) %}
                     <span class="pull-right">
                         <a href="{{ path('edit_product', { id: product.id }) }}">Edit</a>
                     </span>

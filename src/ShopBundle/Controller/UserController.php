@@ -3,6 +3,7 @@
 namespace ShopBundle\Controller;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use ShopBundle\Entity\Cart;
 use ShopBundle\Entity\Role;
 use ShopBundle\Entity\User;
 use ShopBundle\Form\UserType;
@@ -34,9 +35,16 @@ class UserController extends Controller
                 'name' => 'ROLE_USER'
             ]);
             $user->addRole($userRole);
+            $cart = new Cart();
 
             $em = $this->getDoctrine()->getManager();
+
+            $em->persist($cart);
+            $user->setCart($cart);
             $em->persist($user);
+            $cart->setUser($user);
+            $em->persist($cart);
+
             $em->flush();
 
             return $this->redirectToRoute('security_login');
@@ -52,6 +60,10 @@ class UserController extends Controller
      */
     public function profileAction($id)
     {
+        if (!$this->getUser()) {
+            return $this->redirectToRoute('security_login');
+        }
+
         $user = $this->getDoctrine()->getRepository(User::class)->find($id);
 
         $isLoggedInUser = $user->getId() === $this->getUser()->getId();

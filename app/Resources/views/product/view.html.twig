@@ -1,0 +1,39 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    Product - {{ product.name }}
+{% endblock %}
+
+{% block main %}
+    <div class="well">
+        <h2>{{ product.name }}</h2>
+        <p>Description: {{ product.description }}</p>
+        <p>Seller:
+            <a href="{{ path('user_profile', { id: product.user.id }) }}">
+                {{ product.user.fullName }}
+            </a>
+        </p>
+        <p>Date added:{{ product.dateCreated.format('Y-m-d H:m:s') }}</p>
+        <p>Last updated:{{ product.dateUpdated.format('Y-m-d H:m:s') }}</p>
+        <p>Price: {{ product.price|localizedcurrency('EUR') }}</p>
+        <p>Left In Stock: {{ product.quantity }}</p>
+        <p>Category:
+            <a href="{{ path('view_products_by_category', { id: product.category.id }) }}">
+                {{ product.category.name }}
+            </a>
+        </p>
+    </div>
+    {% for sproduct in product.category.products %}
+        <div class="col-md-4">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <a href="{{ path('view_product', { id: sproduct.id }) }}">{{ sproduct.name }}</a>
+                </div>
+                <div class="panel-body">
+                    {{ sproduct.description }}
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+{% endblock %}
+
