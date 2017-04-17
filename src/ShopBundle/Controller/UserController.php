@@ -9,6 +9,9 @@ use ShopBundle\Form\UserType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 
+/**
+ * @Route("user", name="user")
+ */
 class UserController extends Controller
 {
     /**
@@ -43,32 +46,20 @@ class UserController extends Controller
     }
 
     /**
-     * @Route("/check", name="user_check")
+     * @Route("/profile/{id}", name="user_profile")
      *
-     * @param Request $request
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function checkUser(Request $request)
+    public function profileAction($id)
     {
-        if ($request->request->all()) {
-            //dump($request->request->get('_username'));
-            $user = $this->getDoctrine()->getRepository(User::class)->findOneBy([
-                'username' => $request->request->get('_username')
-            ]);
+        $user = $this->getDoctrine()->getRepository(User::class)->find($id);
 
-            if($this->get('security.password_encoder')->isPasswordValid($user,
-                $request->request->get('_password'))) {
-                echo 'Valid';
-                exit;
-            } else {
-                echo 'Invalid';
-                exit;
-            }
+        $isLoggedInUser = $user->getId() === $this->getUser()->getId();
 
-            dump($user);
-            exit;
-        }
-
-        return $this->render('user/check.html.twig', ['request' => $request]);
+        return $this->render('user/profile.html.twig', [
+                'user' => $user,
+                'isLoggedInUser' => $isLoggedInUser
+            ]
+        );
     }
 }

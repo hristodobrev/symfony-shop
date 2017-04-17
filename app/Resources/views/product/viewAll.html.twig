@@ -24,6 +24,11 @@
             </div>
             <div class="panel-footer">
                 Price: {{ product.price|localizedcurrency('EUR') }}
+                <span class="pull-right">
+                    <a href="{{ path('user_profile', { id: product.user.id }) }}">
+                        {{ product.user.fullName }}
+                    </a>
+                </span>
             </div>
         </div>
     {% endfor %}

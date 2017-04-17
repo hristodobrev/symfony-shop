@@ -5,6 +5,7 @@ namespace ShopBundle\Form;
 use ShopBundle\Entity\Product;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CurrencyType;
+use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -17,7 +18,8 @@ class ProductType extends AbstractType
         $builder
             ->add('name', TextType::class)
             ->add('description', TextareaType::class)
-            ->add('price', CurrencyType::class);
+            ->add('price', CurrencyType::class)
+            ->add('quantity', NumberType::class);
     }
 
     public function configureOptions(OptionsResolver $resolver)

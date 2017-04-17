@@ -1,0 +1,17 @@
+{% extends 'base.html.twig' %}
+
+{% block main %}
+    <div class="well">
+        {% if isLoggedInUser %}
+            <p>Username: {{ user.username }}</p>
+            <p>Full Name: {{ user.fullName }}</p>
+            <p>Email: {{ user.email }}</p>
+            <p>Cash: {{ user.cash }}</p>
+            <p>Products: {{ user.products|length }}</p>
+        {% else %}
+            <p>User: {{ user.fullName }}</p>
+            <p>Email: {{ user.email }}</p>
+            <p>Products: {{ user.products|length }}</p>
+        {% endif %}
+    </div>
+{% endblock %}
