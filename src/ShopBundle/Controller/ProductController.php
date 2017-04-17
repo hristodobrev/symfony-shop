@@ -2,6 +2,8 @@
 
 namespace ShopBundle\Controller;
 
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
+use ShopBundle\Entity\Category;
 use ShopBundle\Entity\Product;
 use ShopBundle\Form\ProductType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -20,10 +22,33 @@ class ProductController extends Controller
      */
     public function viewAllAction()
     {
+        $categories = $this->getDoctrine()->getRepository(Category::class)->findAll();
+
         $products = $this->getDoctrine()->getRepository(Product::class)->findAll();
 
         return $this->render('product/viewAll.html.twig', [
-            'products' => $products
+            'products' => $products,
+            'categories' => $categories
+        ]);
+    }
+
+    /**
+     * @Route("/category/{id}", name="view_products_by_category")
+     *
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function viewByCategoryAction($id)
+    {
+        $categoryRepository = $this->getDoctrine()->getRepository(Category::class);
+        $categories = $categoryRepository->findAll();
+        $category = $categoryRepository->find($id);
+
+        $products = $category->getProducts();
+
+        return $this->render('product/viewByCategory.html.twig', [
+            'products' => $products,
+            'categories' => $categories,
+            'currentCategoryId' => $id
         ]);
     }
 

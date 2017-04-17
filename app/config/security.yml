@@ -27,3 +27,4 @@ security:
                 target: homepage
 
     access_control:
+#        - { path: ^/product/add, roles: ROLE_ADMIN }

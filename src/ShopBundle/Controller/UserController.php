@@ -3,6 +3,7 @@
 namespace ShopBundle\Controller;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use ShopBundle\Entity\Role;
 use ShopBundle\Entity\User;
 use ShopBundle\Form\UserType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -26,6 +27,10 @@ class UserController extends Controller
             $password = $this->get('security.password_encoder')->encodePassword($user, $user->getPassword());
             $user->setPassword($password);
             $user->setCash(100);
+            $userRole = $this->getDoctrine()->getRepository(Role::class)->findOneBy([
+                'name' => 'ROLE_USER'
+            ]);
+            $user->addRole($userRole);
 
             $em = $this->getDoctrine()->getManager();
             $em->persist($user);

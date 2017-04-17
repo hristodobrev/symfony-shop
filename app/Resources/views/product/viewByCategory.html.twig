@@ -2,15 +2,21 @@
 
 {% block main %}
     <ul class="breadcrumb">
-        <li class="active">
-            All
+        <li>
+            <a href="{{ path('view_all_products') }}">All</a>
         </li>
         {% for category in categories %}
-            <li>
-                <a href="{{ path('view_products_by_category', { id: category.id }) }}">
+            {% if currentCategoryId == category.id %}
+                <li class="active">
                     {{ category.name }} ({{ category.products|length }})
-                </a>
-            </li>
+                </li>
+            {% else %}
+                <li>
+                    <a href="{{ path('view_products_by_category', { id: category.id }) }}">
+                        {{ category.name }} ({{ category.products|length }})
+                    </a>
+                </li>
+            {% endif %}
         {% endfor %}
     </ul>
 

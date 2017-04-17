@@ -13,7 +13,7 @@
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0-alpha.6/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
 </head>
 <body>
 <header>
@@ -22,6 +22,12 @@
             <div class="navbar-header">
                 <a href="{{ path('homepage') }}" class="navbar-brand">Shop</a>
             </div>
+            <ul class="nav navbar-nav">
+                <li><a href="{{ path('view_all_products') }}">Products</a></li>
+                {% if app.user %}
+                    <li><a href="{{ path('add_product') }}">Add Product</a></li>
+                {% endif %}
+            </ul>
             <ul class="nav navbar-nav navbar-right">
                 {% if app.user %}
                     <li><a href="">{{ app.user.fullName }}</a></li>
