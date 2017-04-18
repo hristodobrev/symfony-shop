@@ -23,17 +23,19 @@
             </a>
         </p>
     </div>
-    {% for sproduct in product.category.products %}
-        <div class="col-md-4">
-            <div class="panel panel-default">
-                <div class="panel-heading">
-                    <a href="{{ path('view_product', { id: sproduct.id }) }}">{{ sproduct.name }}</a>
-                </div>
-                <div class="panel-body">
-                    {{ sproduct.description }}
+    <div class="row">
+        {% for sproduct in product.category.products %}
+            <div class="col-md-4">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <a href="{{ path('view_product', { id: sproduct.id }) }}">{{ sproduct.name }}</a>
+                    </div>
+                    <div class="panel-body">
+                        {{ sproduct.description }}
+                    </div>
                 </div>
             </div>
-        </div>
-    {% endfor %}
+        {% endfor %}
+    </div>
 {% endblock %}
 
