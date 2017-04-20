@@ -10,6 +10,7 @@
             <fieldset>
                 <legend>Add New Product</legend>
                 <div class="form-group">
+                    <div class="col-lg-offset-3 form-errors">{{ form_errors(productForm.name) }}</div>
                     <label for="name" class="col-lg-3 control-label">Name</label>
                     <div class="col-lg-9">
                         <input type="text" name="product[name]" class="form-control" id="name"
@@ -24,12 +25,14 @@
                     </div>
                 </div>
                 <div class="form-group">
+                    <div class="col-lg-offset-3 form-errors">{{ form_errors(productForm.price) }}</div>
                     <label for="price" class="col-lg-3 control-label">Price</label>
                     <div class="col-lg-9">
                         <input type="number" name="product[price]" class="form-control" id="price">
                     </div>
                 </div>
                 <div class="form-group">
+                    <div class="col-lg-offset-3 form-errors">{{ form_errors(productForm.quantity) }}</div>
                     <label for="quantity" class="col-lg-3 control-label">Quantity</label>
                     <div class="col-lg-9">
                         <input type="number" name="product[quantity]" class="form-control" id="quantity">

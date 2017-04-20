@@ -34,14 +34,19 @@ class ProductController extends Controller
     }
 
     /**
-     * @Route("/{id}", name="view_product")
+     * @Route("/view/{id}", name="view_product", requirements={"id": "\d+"})
      *
-     * @param $id
+     * @param int $id
      * @return \Symfony\Component\HttpFoundation\Response
      */
     public function view($id)
     {
         $product = $this->getDoctrine()->getRepository(Product::class)->find($id);
+
+        if ($product === null) {
+            $this->addFlash('error', 'Product does not exist.');
+            return $this->redirectToRoute('view_all_products');
+        }
 
         return $this->render('product/view.html.twig', [
             'product' => $product
@@ -94,6 +99,8 @@ class ProductController extends Controller
             $em->persist($product);
             $em->flush();
 
+            $this->addFlash('success', 'Product added successfully.');
+
             return $this->redirectToRoute('view_all_products');
         }
 
@@ -117,11 +124,17 @@ class ProductController extends Controller
 
         $product = $this->getDoctrine()->getRepository(Product::class)->find($id);
 
+        if ($product == null) {
+            $this->addFlash('error', 'Product does not exist.');
+            $this->redirectToRoute('view_all_products');
+        }
+
         if ($this->getUser()->getId() != $product->getUser()->getId() &&
             !$this->getUser()->isAdmin() &&
             !$this->getUser()->isEditor()
         ) {
-            throw new \Exception('You cannot edit other\'s users post.');
+            $this->addFlash('error', 'You cannot edit other users\' posts.');
+            return $this->redirectToRoute('view_all_products');
         }
 
         $form = $this->createForm(ProductType::class, $product);
@@ -138,6 +151,7 @@ class ProductController extends Controller
             $em->persist($product);
             $em->flush();
 
+            $this->addFlash('info', 'Product edited successfully.');
             return $this->redirectToRoute('view_all_products');
         }
 

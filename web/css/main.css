@@ -1,0 +1,8 @@
+.panel-body p:last-child, .panel-body div:last-child {
+    margin: 0;
+}
+
+.form-errors {
+    color: red;
+    font-size: 0.8em;
+}

@@ -2,8 +2,10 @@
 
 namespace ShopBundle\Entity;
 
+use Doctrine\Common\Annotations\Annotation\Required;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Product
@@ -25,6 +27,8 @@ class Product
     /**
      * @var string
      *
+     * @Assert\NotBlank()
+     *
      * @ORM\Column(name="name", type="string", length=255)
      */
     private $name;
@@ -38,6 +42,9 @@ class Product
 
     /**
      * @var string
+     *
+     * @Assert\NotBlank()
+     * @Assert\Range(min=0.01, minMessage="Price must be more than 0.01")
      *
      * @ORM\Column(name="price", type="decimal", precision=10, scale=2)
      */
@@ -61,6 +68,10 @@ class Product
 
     /**
      * @var int
+     *
+     * @Assert\NotBlank()
+     * @Assert\Range(min=0, minMessage="Quantity must be more than 0")
+     * @Required()
      *
      * @ORM\Column(name="quantity", type="integer")
      */
