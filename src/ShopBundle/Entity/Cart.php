@@ -78,13 +78,13 @@ class Cart
     /**
      * Set products
      *
-     * @param string $products
+     * @param Product $product
      *
      * @return Cart
      */
-    public function setProducts($products)
+    public function addProduct(Product $product)
     {
-        $this->products = $products;
+        $this->products[] = $product;
 
         return $this;
     }
@@ -97,6 +97,27 @@ class Cart
     public function getProducts()
     {
         return $this->products;
+    }
+
+    public function isProductInCart(Product $product)
+    {
+        foreach ($this->products as $cartProduct) {
+            if ($cartProduct->getId() === $product->getId()) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    public function totalPrice()
+    {
+        $totalSum = 0;
+        foreach ($this->products as $product) {
+            $totalSum += $product->getPrice();
+        }
+
+        return $totalSum;
     }
 }
 

@@ -41,11 +41,17 @@
                     {% else %}
                         <span class="text-danger">Not In Stock</span>
                     {% endif %}
-                    <span class="pull-right">
-                        <a href="{{ path('user_profile', { id: product.user.id }) }}">
-                            {{ product.user.fullName }}
+                </p>
+                <p>
+                    Seller:
+                    <a href="{{ path('user_profile', { id: product.user.id }) }}">
+                        {{ product.user.fullName }}
+                    </a>
+                    {% if app.user %}
+                        <a href="{{ path('add_product_to_cart', { productId: product.id }) }}" class="pull-right">
+                            Add To Cart
                         </a>
-                    </span>
+                    {% endif %}
                 </p>
             </div>
         </div>

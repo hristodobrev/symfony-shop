@@ -8,13 +8,19 @@
     {% block stylesheets %}{% endblock %}
     <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}"/>
 
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/css/tether.min.css"/>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css"/>
-    <link rel="stylesheet" href="https://bootswatch.com/yeti/bootstrap.min.css"/>
+    {#<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/css/tether.min.css"/>#}
+    {#<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css"/>#}
+    {#<link rel="stylesheet" href="https://bootswatch.com/yeti/bootstrap.min.css"/>#}
+    <link rel="stylesheet" href="{{ asset('css/libs/tether.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/libs/bootstrap.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/libs/bootstrap-yeti.min.css') }}">
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    {#<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>#}
+    {#<script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js"></script>#}
+    {#<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>#}
+    <script src="{{ asset('js/libs/jquery.min.js') }}"></script>
+    <script src="{{ asset('js/libs/tether.min.js') }}"></script>
+    <script src="{{ asset('js/libs/bootstrap.min.js') }}"></script>
 
     <script src="{{ asset('js/main.js') }}"></script>
 </head>
@@ -34,6 +40,34 @@
             <ul class="nav navbar-nav navbar-right">
                 {% if app.user %}
                     <li><a href="{{ path('user_profile', { id: app.user.id }) }}">{{ app.user.fullName }}</a></li>
+                    {% if app.user.cart.products|length > 0 %}
+                        {#<li>#}
+                        {#<a href="">Cart: {{ app.user.cart.totalPrice|localizedcurrency('EUR') }}</a>#}
+                        {#<ul class="dropdown-toggle">#}
+                        {#{% for product in app.user.cart.products %}#}
+                        {#<li>{{ product.name }}</li>#}
+                        {#{% endfor %}#}
+                        {#</ul>#}
+                        {#</li>#}
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button"
+                               aria-expanded="false">
+                                Cart ({{ app.user.cart.products|length }}
+                                ): {{ app.user.cart.totalPrice|localizedcurrency('EUR') }}
+                            </a>
+                            <ul class="dropdown-menu" role="menu">
+                                {% for product in app.user.cart.products %}
+                                    <li>
+                                        <a href="">
+                                            {{ product.name }} ({{ product.price|localizedcurrency('EUR') }})
+                                        </a>
+                                    </li>
+                                {% endfor %}
+                                <li class="divider"></li>
+                                <li><a href="">View Cart</a></li>
+                            </ul>
+                        </li>
+                    {% endif %}
                     <li><a href="">Cash: {{ app.user.cash|localizedcurrency('EUR') }}</a></li>
                     <li><a href="{{ path('security_logout') }}">Logout</a></li>
                 {% else %}
