@@ -11,9 +11,11 @@
     {#<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/css/tether.min.css"/>#}
     {#<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css"/>#}
     {#<link rel="stylesheet" href="https://bootswatch.com/yeti/bootstrap.min.css"/>#}
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
     <link rel="stylesheet" href="{{ asset('css/libs/tether.min.css') }}">
     <link rel="stylesheet" href="{{ asset('css/libs/bootstrap.min.css') }}">
     <link rel="stylesheet" href="{{ asset('css/libs/bootstrap-yeti.min.css') }}">
+    {#<link rel="stylesheet" href="{{ asset('css/libs/font-awesome.min.css') }}">#}
 
     {#<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>#}
     {#<script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js"></script>#}
@@ -41,30 +43,26 @@
                 {% if app.user %}
                     <li><a href="{{ path('user_profile', { id: app.user.id }) }}">{{ app.user.fullName }}</a></li>
                     {% if app.user.cart.products|length > 0 %}
-                        {#<li>#}
-                        {#<a href="">Cart: {{ app.user.cart.totalPrice|localizedcurrency('EUR') }}</a>#}
-                        {#<ul class="dropdown-toggle">#}
-                        {#{% for product in app.user.cart.products %}#}
-                        {#<li>{{ product.name }}</li>#}
-                        {#{% endfor %}#}
-                        {#</ul>#}
-                        {#</li>#}
                         <li class="dropdown">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button"
                                aria-expanded="false">
-                                Cart ({{ app.user.cart.products|length }}
-                                ): {{ app.user.cart.totalPrice|localizedcurrency('EUR') }}
+                                Cart ({{ app.user.cart.products|length }}):
+                                {{ price_calculator.getCartTotalPrice(app.user.cart)|localizedcurrency('EUR') }}
                             </a>
                             <ul class="dropdown-menu" role="menu">
                                 {% for product in app.user.cart.products %}
                                     <li>
                                         <a href="">
-                                            {{ product.name }} ({{ product.price|localizedcurrency('EUR') }})
+                                            {{ product.name }}
+                                            ({% if product.price != price_calculator.calculatePrice(product) %}
+                                                <del class="text-warning">{{ product.price|localizedcurrency('EUR') }}</del>
+                                                <span class="text-success">{{ price_calculator.calculatePrice(product)|localizedcurrency('EUR') }}</span>
+                                            {% endif %})
                                         </a>
                                     </li>
                                 {% endfor %}
                                 <li class="divider"></li>
-                                <li><a href="">View Cart</a></li>
+                                <li><a href="{{ path('view_cart') }}">View Cart</a></li>
                             </ul>
                         </li>
                     {% endif %}

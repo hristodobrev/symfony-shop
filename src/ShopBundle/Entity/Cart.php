@@ -89,10 +89,22 @@ class Cart
         return $this;
     }
 
+    public function removeProduct(Product $product)
+    {
+        $filteredProducts = [];
+        foreach ($this->products as $p) {
+            if (!$p->getId() === $product->getId()) {
+                $filteredProducts[] = $p;
+            }
+        }
+
+        $this->products = $filteredProducts;
+    }
+
     /**
      * Get products
      *
-     * @return string
+     * @return Product[]
      */
     public function getProducts()
     {
@@ -110,14 +122,11 @@ class Cart
         return false;
     }
 
-    public function totalPrice()
+    public function empty()
     {
-        $totalSum = 0;
-        foreach ($this->products as $product) {
-            $totalSum += $product->getPrice();
+        foreach ($this->getProducts() as $product) {
+            $this->removeProduct($product);
         }
-
-        return $totalSum;
     }
 }
 

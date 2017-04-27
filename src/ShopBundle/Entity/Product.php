@@ -105,6 +105,13 @@ class Product
      */
     private $carts;
 
+    /**
+     * @var Promotion[]
+     *
+     * @ORM\OneToMany(targetEntity="ShopBundle\Entity\Promotion", mappedBy="product")
+     */
+    private $promotions;
+
     public function __construct()
     {
         $this->dateCreated = new \DateTime();
@@ -316,6 +323,46 @@ class Product
         $this->carts = $carts;
 
         return $this;
+    }
+
+    /**
+     * @return Product[]
+     */
+    public function getRelatedProducts()
+    {
+        $categoryProducts = $this->getCategory()->getProducts();
+
+        if (count($categoryProducts) < 4) {
+            return $categoryProducts;
+        }
+
+        $products = [];
+        while (count($products) < 3) {
+            $randIndex = rand(0, count($categoryProducts) - 1);
+            if (in_array($categoryProducts[$randIndex], $products) || $this->getId() === $categoryProducts[$randIndex]->getId()) {
+                continue;
+            }
+
+            $products[] = $categoryProducts[$randIndex];
+        }
+
+        return $products;
+    }
+
+    /**
+     * @return Promotion[]
+     */
+    public function getPromotions()
+    {
+        return $this->promotions;
+    }
+
+    /**
+     * @param Promotion $promotion
+     */
+    public function addPromotion(Promotion $promotion)
+    {
+       $this->promotions[] = $promotion;
     }
 }
 

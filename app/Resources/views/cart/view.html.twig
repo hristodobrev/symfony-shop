@@ -1,0 +1,47 @@
+{% extends 'base.html.twig' %}
+
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{ asset('css/main.css') }}">
+{% endblock %}
+
+{% block main %}
+    <div class="col-md-8 col-md-offset-2">
+        <table class="table">
+            {% for product in cart.products %}
+                <tr>
+                    <td>{{ product.name }}</td>
+                    <td>In Stock: {{ product.quantity }}</td>
+                    <td class="text-right">
+                        {% set initPrice = product.price %}
+                        {% set discPrice = price_calculator.calculatePrice(product) %}
+                        {% if initPrice != discPrice %}
+                            <del class="text-warning">{{ initPrice|localizedcurrency('EUR') }}</del> /
+                            <span class="text-success">{{ discPrice|localizedcurrency('EUR') }}</span>
+                            <span class="label label-success">
+                            -{{ 100 - (discPrice / initPrice) * 100}}%
+                        </span>
+                        {% else %}
+                            {{ price_calculator.calculatePrice(product)|localizedcurrency('EUR') }}
+                        {% endif %}
+                    </td>
+                    <td class="text-right">
+                        <a href="{{ path('remove_product_from_cart', { productId: product.id }) }}">
+                            <i class="fa fa-times text-danger"></i>
+                        </a>
+                    </td>
+                </tr>
+            {% endfor %}
+            <tr>
+                <td colspan="4" class="text-right">
+                    Total Price: <strong>{{ price_calculator.getCartTotalPrice(cart)|localizedcurrency('EUR') }}</strong>
+                </td>
+            </tr>
+        </table>
+        <a href="{{ path('cart_check_out') }}" class="btn btn-success btn-sm pull-right">Check Out Cart</a>
+    </div>
+{% endblock %}
+
+{% block title %}
+    Cart
+{% endblock %}
+

@@ -2,16 +2,14 @@
 
 namespace ShopBundle\Controller;
 
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
-use ShopBundle\Entity\Cart;
 use ShopBundle\Entity\Category;
 use ShopBundle\Entity\Product;
-use ShopBundle\Entity\User;
+use ShopBundle\Entity\Promotion;
 use ShopBundle\Form\ProductType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Validator\Constraints\DateTime;
 
 /**
  * @Route("product", name="product")
@@ -29,9 +27,12 @@ class ProductController extends Controller
 
         $products = $this->getDoctrine()->getRepository(Product::class)->findAllAvailable();
 
+        $priceCalculator = $this->get('app.price_calculator');
+
         return $this->render('product/viewAll.html.twig', [
             'products' => $products,
-            'categories' => $categories
+            'categories' => $categories,
+            'calculator' => $priceCalculator
         ]);
     }
 
@@ -162,39 +163,5 @@ class ProductController extends Controller
             'categories' => $categories,
             'product' => $product
         ]);
-    }
-
-    /**
-     * @Route("/addToCart/{productId}", name="add_product_to_cart")
-     *
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse
-     */
-    public function addToCartAction($productId)
-    {
-        $product = $this->getDoctrine()->getRepository(Product::class)->find($productId);
-
-        if ($product === null) {
-            $this->addFlash('error', 'Product does not exist.');
-            return $this->redirectToRoute('view_all_products');
-        }
-
-        /** @var User $user */
-        $user = $this->getUser();
-        /** @var Cart $cart */
-        $cart = $user->getCart();
-
-        if ($cart->isProductInCart($product)) {
-            $this->addFlash('error', 'This product is already in your cart.');
-            return $this->redirectToRoute('view_all_products');
-        }
-
-        $cart->addProduct($product);
-
-        $em = $this->getDoctrine()->getManager();
-        $em->persist($cart);
-        $em->flush();
-
-        $this->addFlash('success', 'Product added to cart successfully.');
-        return $this->redirectToRoute('view_all_products');
     }
 }

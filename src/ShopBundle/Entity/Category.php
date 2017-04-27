@@ -38,6 +38,13 @@ class Category
     private $products;
 
     /**
+     * @var Promotion[]
+     *
+     * @ORM\OneToMany(targetEntity="ShopBundle\Entity\Promotion", mappedBy="category")
+     */
+    private $promotions;
+
+    /**
      * Get id
      *
      * @return int
@@ -84,6 +91,22 @@ class Category
         }
 
         return $products;
+    }
+
+    /**
+     * @return Promotion[]
+     */
+    public function getPromotions()
+    {
+        return $this->promotions;
+    }
+
+    /**
+     * @param Promotion $promotion
+     */
+    public function addPromotion(Promotion $promotion)
+    {
+        $this->promotions[] = $promotion;
     }
 }
 

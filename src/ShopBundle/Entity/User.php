@@ -83,7 +83,7 @@ class User implements UserInterface
      * @ORM\OneToOne(targetEntity="ShopBundle\Entity\Cart", mappedBy="user")
      */
     private $cart;
-    
+
     /**
      * Get id
      *
