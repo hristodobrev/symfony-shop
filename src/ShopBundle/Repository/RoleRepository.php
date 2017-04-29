@@ -10,4 +10,8 @@ namespace ShopBundle\Repository;
  */
 class RoleRepository extends \Doctrine\ORM\EntityRepository
 {
+    public function findByName($name)
+    {
+        return $this->findOneBy(['name' => $name]);
+    }
 }

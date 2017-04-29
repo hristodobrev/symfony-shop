@@ -1,0 +1,47 @@
+{% extends 'base.html.twig' %}
+
+{% block main %}
+    <div class="col-md-8 col-md-offset-2">
+        <table class="table">
+            <tr>
+                <th>Full Name</th>
+                <th>Username</th>
+                <th>Email</th>
+                <th>Products</th>
+                <th class="text-center">Editor</th>
+                <th class="text-center">Admin</th>
+            </tr>
+            {% for user in users %}
+                <tr>
+                    <td>{{ user.fullName }}</td>
+                    <td>{{ user.username }}</td>
+                    <td>{{ user.email }}</td>
+                    <td>{{ user.products|length }}</td>
+                    <td class="text-center">
+                        {% if user.editor %}
+                            <a href="{{ path('demote_editor', { id: user.id }) }}">
+                                <span class="fa fa-check text-success" data-toggle="tooltip" title="Demote from Editor"></span>
+                            </a>
+                        {% else %}
+                            <a href="{{ path('promote_editor', { id: user.id }) }}">
+                                <span class="fa fa-times text-danger" data-toggle="tooltip" title="Promote to Editor"></span>
+                            </a>
+                        {% endif %}
+                    </td>
+                    <td class="text-center">
+                        {% if user.admin %}
+                            <a href="{{ path('demote_admin', { id: user.id }) }}">
+                                <span class="fa fa-check text-success" data-toggle="tooltip" title="Demote from Admin"></span>
+                            </a>
+                        {% else %}
+                            <a href="{{ path('promote_admin', { id: user.id }) }}">
+                                <span class="fa fa-times text-danger" data-toggle="tooltip" title="Promote to Admin"></span>
+                            </a>
+                        {% endif %}
+                    </td>
+                </tr>
+            {% endfor %}
+        </table>
+    </div>
+{% endblock %}
+

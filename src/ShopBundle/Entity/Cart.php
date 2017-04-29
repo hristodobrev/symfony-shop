@@ -33,7 +33,7 @@ class Cart
     /**
      * @var ArrayCollection|Product[]
      *
-     * @ORM\ManyToMany(targetEntity="ShopBundle\Entity\Product")
+     * @ORM\ManyToMany(targetEntity="ShopBundle\Entity\Product", inversedBy="carts")
      * @ORM\JoinTable(name="carts_products",
      *     joinColumns={@ORM\JoinColumn(name="cart_id", referencedColumnName="id")},
      *     inverseJoinColumns={@ORM\JoinColumn(name="product_id", referencedColumnName="id")}

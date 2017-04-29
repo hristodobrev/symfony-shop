@@ -1,0 +1,82 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    Edit Promotion
+{% endblock %}
+
+{% block main %}
+    <div class="col-lg-6 col-lg-offset-3">
+        <form class="form-horizontal" method="post" action="{{ path('edit_promotion', { id: promotion.id }) }}">
+            <fieldset>
+                <legend>Edit Promotion</legend>
+                <div class="form-group">
+                    <label for="date-from" class="col-lg-3 control-label">Date From</label>
+                    <div class="col-lg-9">
+                        {#<input name="promotion[dateFrom]"#}
+                               {#value="{{ promotion.dateFrom.format('Y-m-d H:m:s') }}" class="form-control"#}
+                               {#id="date-from">#}
+                        {{ form_widget(promotionForm.dateFrom) }}
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="date-to" class="col-lg-3 control-label">Date To</label>
+                    <div class="col-lg-9">
+                        {#<input name="promotion[dateTo]"#}
+                               {#value="{{ promotion.dateTo.format('Y-m-d H:m:s') }}"#}
+                               {#class="form-control"#}
+                               {#id="date-to">#}
+                        {#{{ form_row(promotionForm.dateTo) }}#}
+                        {{ form_widget(promotionForm.dateTo) }}
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="discount" class="col-lg-3 control-label">Discount</label>
+                    <div class="col-lg-9">
+                        <input type="number" name="promotion[discount]"
+                               value="{{ promotion.discount }}"
+                               class="form-control"
+                               id="discount">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="categories" class="col-lg-3 control-label">Category</label>
+                    <div class="col-lg-9">
+                        <select name="category" id="categories" class="form-control">
+                            <option value="null">None</option>
+                            {% for category in categories %}
+                                {% if promotion.category and promotion.category.id == category.id %}
+                                    <option selected="selected" value="{{ category.id }}">{{ category.name }}</option>
+                                {% else %}
+                                    <option value="{{ category.id }}">{{ category.name }}</option>
+                                {% endif %}
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="products" class="col-lg-3 control-label">Products</label>
+                    <div class="col-lg-9">
+                        <select name="product" id="products" class="form-control">
+                            <option value="null">None</option>
+                            {% for product in products %}
+                                {% if promotion.product and promotion.product.id == product.id %}
+                                    <option selected="selected" value="{{ product.id }}">{{ product.name }}</option>
+                                {% else %}
+                                    <option value="{{ product.id }}">{{ product.name }}</option>
+                                {% endif %}
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-lg-offset-3 col-lg-9">
+                        {{ form_row(promotionForm._token) }}
+                        <input class="btn btn-primary" type="submit" value="Edit Promotion">
+                    </div>
+                </div>
+            </fieldset>
+        </form>
+    </div>
+{% endblock %}
+

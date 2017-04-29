@@ -4,7 +4,6 @@
     <meta charset="UTF-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>{% block title %}Shop{% endblock %}</title>
-    <link rel="stylesheet" href="{{ asset('css/main.css') }}">
     {% block stylesheets %}{% endblock %}
     <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}"/>
 
@@ -15,7 +14,8 @@
     <link rel="stylesheet" href="{{ asset('css/libs/tether.min.css') }}">
     <link rel="stylesheet" href="{{ asset('css/libs/bootstrap.min.css') }}">
     <link rel="stylesheet" href="{{ asset('css/libs/bootstrap-yeti.min.css') }}">
-    {#<link rel="stylesheet" href="{{ asset('css/libs/font-awesome.min.css') }}">#}
+    <link rel="stylesheet" href="{{ asset('css/libs/font-awesome.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/main.css') }}">
 
     {#<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>#}
     {#<script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js"></script>#}
@@ -38,6 +38,12 @@
                 {% if app.user %}
                     <li><a href="{{ path('add_product') }}">Add Product</a></li>
                 {% endif %}
+                {% if app.user and (app.user.admin or app.user.editor) %}
+                    <li><a href="{{ path('all_promotions') }}">Promotions</a></li>
+                {% endif %}
+                {% if app.user and app.user.admin %}
+                    <li><a href="{{ path('user_roles') }}">Users</a></li>
+                {% endif %}
             </ul>
             <ul class="nav navbar-nav navbar-right">
                 {% if app.user %}
@@ -52,11 +58,13 @@
                             <ul class="dropdown-menu" role="menu">
                                 {% for product in app.user.cart.products %}
                                     <li>
-                                        <a href="">
+                                        <a href="{{ path('view_product', { id: product.id }) }}">
                                             {{ product.name }}
                                             ({% if product.price != price_calculator.calculatePrice(product) %}
                                                 <del class="text-warning">{{ product.price|localizedcurrency('EUR') }}</del>
                                                 <span class="text-success">{{ price_calculator.calculatePrice(product)|localizedcurrency('EUR') }}</span>
+                                            {% else %}
+                                                {{ product.price|localizedcurrency('EUR') }}
                                             {% endif %})
                                         </a>
                                     </li>
@@ -77,13 +85,6 @@
     </nav>
 </header>
 <div class="container">
-    {% for error in app.session.flashBag.get('error') %}
-        <div class="alert alert-danger">
-            <button type="button" class="close">&times;</button>
-            <h4>Error!</h4>
-            <p>{{ error }}<p>
-        </div>
-    {% endfor %}
     {% for info in app.session.flashBag.get('info') %}
         <div class="alert alert-info">
             <button type="button" class="close">&times;</button>
@@ -96,6 +97,20 @@
             <button type="button" class="close">&times;</button>
             <h4>Success</h4>
             <p>{{ success }}<p>
+        </div>
+    {% endfor %}
+    {% for warning in app.session.flashBag.get('warning') %}
+        <div class="alert alert-warning">
+            <button type="button" class="close">&times;</button>
+            <h4>Warning!</h4>
+            <p>{{ warning }}<p>
+        </div>
+    {% endfor %}
+    {% for error in app.session.flashBag.get('error') %}
+        <div class="alert alert-danger">
+            <button type="button" class="close">&times;</button>
+            <h4>Error!</h4>
+            <p>{{ error }}<p>
         </div>
     {% endfor %}
     {% block main %}{% endblock %}

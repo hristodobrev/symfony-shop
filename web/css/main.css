@@ -2,6 +2,21 @@
     margin: 0;
 }
 
+.panel-footer {
+    background: #fff;
+    border-color: #EFEFEF;
+    padding: 5px 10px;
+}
+
+.admin-actions-td {
+    font-size: 1.2em;
+}
+
+.admin-actions-td .fa {
+    margin: 0 5px;
+}
+
+
 .form-errors {
     color: red;
     font-size: 0.8em;

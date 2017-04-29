@@ -9,7 +9,19 @@
         <div class="panel-body">
             <h2>
                 {{ product.name }}
-                <span class="pull-right">{{ product.price|localizedcurrency('EUR') }}</span>
+                <span class="pull-right">
+                    {% set initPrice = product.price %}
+                    {% set discPrice = calculator.calculatePrice(product) %}
+                    {% if initPrice != discPrice %}
+                        <del class="text-warning">{{ initPrice|localizedcurrency('EUR') }}</del> /
+                        <span class="text-success">{{ discPrice|localizedcurrency('EUR') }}</span>
+                        <span class="label label-success">
+                            -{{ 100 - (discPrice / initPrice) * 100 }}%
+                        </span>
+                    {% else %}
+                        {{ calculator.calculatePrice(product)|localizedcurrency('EUR') }}
+                    {% endif %}
+                </span>
             </h2>
             <hr>
             <p>Description: {{ product.description }}</p>
@@ -25,8 +37,27 @@
                 <a href="{{ path('view_products_by_category', { id: product.category.id }) }}">
                     {{ product.category.name }}
                 </a>
+                {% if app.user and product.user != app.user and product.quantity %}
+                    {% if app.user.cart.isProductInCart(product) %}
+                        <a href="{{ path('remove_product_from_cart', { productId: product.id }) }}"
+                           class="pull-right">
+                            Remove from Cart
+                        </a>
+                    {% else %}
+                        <a href="{{ path('add_product_to_cart', { productId: product.id }) }}" class="pull-right">
+                            Add To Cart
+                        </a>
+                    {% endif %}
+                {% endif %}
             </p>
         </div>
+        {% if app.user and (product.user.id == app.user.id or app.user.isAdmin or app.user.isEditor) %}
+            <div class="panel-footer">
+                <a href="{{ path('edit_product', { id: product.id }) }}">
+                    <span class="fa fa-edit" data-toggle="tooltip" title="Edit Product"></span>
+                </a>
+            </div>
+        {% endif %}
     </div>
     <h2>Related Products</h2>
     <hr>
@@ -41,6 +72,13 @@
                     <div class="panel-body">
                         {{ relatedProduct.description }}
                     </div>
+                    {% if app.user and (product.user.id == app.user.id or app.user.isAdmin or app.user.isEditor) %}
+                        <div class="panel-footer">
+                            <a href="{{ path('edit_product', { id: product.id }) }}">
+                                <span class="fa fa-edit" data-toggle="tooltip" title="Edit Product"></span>
+                            </a>
+                        </div>
+                    {% endif %}
                 </div>
             </div>
         {% endfor %}

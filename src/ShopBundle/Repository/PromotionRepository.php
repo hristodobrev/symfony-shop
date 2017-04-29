@@ -66,6 +66,8 @@ class PromotionRepository extends \Doctrine\ORM\EntityRepository
             ->select('p')
             ->where('p.dateFrom <= :date')
             ->andWhere('p.dateTo >= :date')
+            ->andWhere($qb->expr()->isNull('p.product'))
+            ->andWhere($qb->expr()->isNull('p.category'))
             ->setParameter('date', $now)
             ->orderBy('p.discount', 'desc')
             ->setMaxResults(1)

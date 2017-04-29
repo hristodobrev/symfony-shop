@@ -1,6 +1,8 @@
 $(function () {
-    console.log('test');
-
+    $(document).ready(function() {
+        $("body").tooltip({ selector: '[data-toggle=tooltip]' });
+    });
+    
     $('.alert').each(function (ind, el) {
         $(el).find('.close').click(function () {
             $(el).fadeOut();

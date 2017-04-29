@@ -6,7 +6,6 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use ShopBundle\Entity\Category;
 use ShopBundle\Entity\Product;
-use ShopBundle\Entity\Promotion;
 use ShopBundle\Form\ProductType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
@@ -51,8 +50,11 @@ class ProductController extends Controller
             return $this->redirectToRoute('view_all_products');
         }
 
+        $priceCalculator = $this->get('app.price_calculator');
+
         return $this->render('product/view.html.twig', [
-            'product' => $product
+            'product' => $product,
+            'calculator' => $priceCalculator
         ]);
     }
 
@@ -69,10 +71,13 @@ class ProductController extends Controller
 
         $products = $category->getProducts();
 
+        $priceCalculator = $this->get('app.price_calculator');
+
         return $this->render('product/viewByCategory.html.twig', [
             'products' => $products,
             'categories' => $categories,
-            'currentCategoryId' => $id
+            'currentCategoryId' => $id,
+            'calculator' => $priceCalculator
         ]);
     }
 

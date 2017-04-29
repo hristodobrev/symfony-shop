@@ -1,0 +1,53 @@
+{% extends 'base.html.twig' %}
+
+{% block main %}
+    <div class="col-lg-6 col-lg-offset-3">
+        <form class="form-horizontal" name="register" action="{{ path('edit_profile') }}" method="post">
+            <fieldset>
+                <legend>Edit Profile</legend>
+                <div class="form-group">
+                    <label for="username" class="col-lg-3 control-label">Username</label>
+                    <div class="col-lg-9">
+                        <input type="text" name="user[username]" class="form-control"
+                               id="username" value="{{ user.username }}">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="email" class="col-lg-3 control-label">Email</label>
+                    <div class="col-lg-9">
+                        <input type="email" name="user[email]" class="form-control"
+                               id="email" value="{{ user.email }}">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="fullName" class="col-lg-3 control-label">Full name</label>
+                    <div class="col-lg-9">
+                        <input type="text" name="user[fullName]" class="form-control"
+                               id="fullName" value="{{ user.fullName }}">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="password" class="col-lg-3 control-label">Password</label>
+                    <div class="col-lg-9">
+                        <input type="password" name="password" class="form-control"
+                               id="password">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="rep-password" class="col-lg-3 control-label">Repeat Password</label>
+                    <div class="col-lg-9">
+                        <input type="password" name="rep-password" class="form-control"
+                               id="rep-password">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-lg-offset-3 col-lg-9">
+                        {{ form_row(userForm._token) }}
+                        <input class="btn btn-primary" type="submit" value="Edit Profile">
+                    </div>
+                </div>
+            </fieldset>
+        </form>
+    </div>
+{% endblock %}
+

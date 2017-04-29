@@ -95,7 +95,7 @@ class PriceCalculator
             }
         }
 
-        if ($this->biggestCommonPromotion == 0) {
+        if ($this->biggestCommonPromotion == 0 && $promotionsRepo->getBiggestCommonPromotion()) {
             $this->biggestCommonPromotion = $promotionsRepo->getBiggestCommonPromotion()->getDiscount();
         }
     }

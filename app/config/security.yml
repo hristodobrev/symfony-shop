@@ -28,3 +28,6 @@ security:
 
     access_control:
 #        - { path: ^/product/add, roles: ROLE_ADMIN }
+        - { path: ^/promotions/all, roles: [ ROLE_ADMIN, ROLE_EDITOR ] }
+        - { path: ^/promotions, roles: [ ROLE_ADMIN ] }
+        - { path: ^/admin, roles: [ ROLE_ADMIN ] }

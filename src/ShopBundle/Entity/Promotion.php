@@ -171,5 +171,31 @@ class Promotion
     {
         $this->category = $category;
     }
+
+    public function removeCategory()
+    {
+        $this->category = null;
+    }
+
+    public function removeProduct()
+    {
+        $this->product = null;
+    }
+
+    public function isActive()
+    {
+        $today = new \DateTime();
+        $today->setTime(0, 0, 0);
+
+        if ($today < $this->dateFrom) {
+            return false;
+        }
+
+        if ($today > $this->dateTo) {
+            return false;
+        }
+
+        return true;
+    }
 }
 

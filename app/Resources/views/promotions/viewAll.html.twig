@@ -1,0 +1,47 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    Promotions
+{% endblock %}
+
+{% block main %}
+    <div class="col-md-8 col-md-offset-2">
+        <table class="table">
+            <thead>
+            <tr>
+                <th>Date From</th>
+                <th>Date To</th>
+                <th>Discount</th>
+                <th>Category</th>
+                <th>Product</th>
+                <th class="text-center">Active</th>
+                {% if app.user.admin %}
+                    <th>Admin Actions</th>
+                {% endif %}
+            </tr>
+            </thead>
+            {% for promotion in promotions %}
+                <tr>
+                    <td>{{ promotion.dateFrom.format('Y-m-d H:m:s') }}</td>
+                    <td>{{ promotion.dateTo.format('Y-m-d H:m:s') }}</td>
+                    <td>{{ promotion.discount }}%</td>
+                    <td>{{ promotion.category.name|default('') }}</td>
+                    <td>{{ promotion.product.name|default('') }}</td>
+                    <td class="text-center">
+                        {% if promotion.active %}
+                            <span class="fa fa-check text-success"></span>
+                        {% else %}
+                            <span class="fa fa-times text-danger"></span>
+                        {% endif %}
+                    </td>
+                    {% if app.user.admin %}
+                        <td class="admin-actions-td">
+                            <a href="{{ path('edit_promotion', { id: promotion.id }) }}"><span class="fa fa-edit"></span></a>
+                            <a href=""><span class="fa fa-times text-danger"></span></a>
+                        </td>
+                    {% endif %}
+                </tr>
+            {% endfor %}
+        </table>
+    </div>
+{% endblock %}

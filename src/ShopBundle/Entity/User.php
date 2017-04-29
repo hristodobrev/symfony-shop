@@ -5,6 +5,7 @@ namespace ShopBundle\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Validator\Constraints\DateTime;
 
 /**
  * User
@@ -59,9 +60,16 @@ class User implements UserInterface
     private $cash;
 
     /**
+     * @var DateTime
+     *
+     * @ORM\Column(name="date_registered", type="datetime")
+     */
+    private $dateRegistered;
+
+    /**
      * @var ArrayCollection|Role[]
      *
-     * @ORM\ManyToMany(targetEntity="ShopBundle\Entity\Role")
+     * @ORM\ManyToMany(targetEntity="ShopBundle\Entity\Role", inversedBy="users")
      * @ORM\JoinTable(name="users_roles",
      *     joinColumns={@ORM\JoinColumn(name="user_id", referencedColumnName="id")},
      *     inverseJoinColumns={@ORM\JoinColumn(name="role_id", referencedColumnName="id")}
@@ -228,6 +236,20 @@ class User implements UserInterface
         return $this;
     }
 
+    public function removeRole(Role $role)
+    {
+        $roles = [];
+        foreach ($this->roles as $userRole) {
+            if ($role->getId() == $userRole->getId()) {
+                continue;
+            }
+
+            $roles[] = $userRole;
+        }
+
+        $this->roles = $roles;
+    }
+
     /**
      * Returns the salt that was originally used to encode the password.
      *
@@ -321,6 +343,22 @@ class User implements UserInterface
         $this->cart = $cart;
 
         return $this;
+    }
+
+    /**
+     * @return DateTime
+     */
+    public function getDateRegistered(): DateTime
+    {
+        return $this->dateRegistered;
+    }
+
+    /**
+     * @param DateTime $dateRegistered
+     */
+    public function setDateRegistered(DateTime $dateRegistered)
+    {
+        $this->dateRegistered = $dateRegistered;
     }
 }
 
